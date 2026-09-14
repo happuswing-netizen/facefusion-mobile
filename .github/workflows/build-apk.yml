@@ -32,10 +32,10 @@ jobs:
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
           echo "GRADLE_PATH=$GRADLE_PATH" >> $GITHUB_ENV
 
-      - name: Build with Gradle
+      - name: Build with Gradle (Skip Qualcomm QNN)
         run: |
           cd ${{ env.PROJECT_DIR }}
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew assembleRelease -PdisableQnn=true --stacktrace
 
       - name: Upload Output APK
         uses: actions/upload-artifact@v4
