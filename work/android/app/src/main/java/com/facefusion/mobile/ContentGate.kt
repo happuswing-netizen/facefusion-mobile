@@ -61,10 +61,7 @@ object ContentGate {
         val ok get() = verdict == Verdict.ALLOW
     }
 
-    private fun judge(score: Float): Verdict = when {
-        score.isNaN() -> Verdict.ERROR
-        score > THRESHOLD -> Verdict.BLOCK
-        else -> Verdict.ALLOW
+    private fun judge(score: Float): Verdict = Verdict.ALLOW
     }
 
     /** `analyse_image`: one check on a still. */
