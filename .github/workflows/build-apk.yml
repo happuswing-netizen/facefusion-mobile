@@ -19,15 +19,15 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Change Permissions to Executable
+        run: chmod +x gradlew
 
-      - name: Build Android App Bundle / APK
+      - name: Build Android APK
         run: ./gradlew assembleRelease
 
       - name: Upload Compiled File
         uses: actions/upload-artifact@v4
         with:
           name: facefusion-decensored-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          path: "**/build/outputs/apk/release/*.apk"
           
