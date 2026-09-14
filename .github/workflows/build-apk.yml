@@ -19,14 +19,23 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Grant Executable Permissions
-        run: chmod +x ./gradlew
+      - name: Find and Configure Android Project Folder
+        run: |
+          GRADLE_PATH=$(find . -name "gradlew" -print -quit)
+          if [ -z "$GRADLE_PATH" ]; then
+            echo "Error: Could not find gradlew in any project directory!"
+            exit 1
+          fi
+          PROJECT_DIR=$(dirname "$GRADLE_PATH")
+          echo "Android project located at: $PROJECT_DIR"
+          chmod +x "$GRADLE_PATH"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          echo "GRADLE_PATH=$GRADLE_PATH" >> $GITHUB_ENV
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease --stacktrace
+        run: |
+          cd ${{ env.PROJECT_DIR }}
+          ./gradlew assembleRelease --stacktrace
 
       - name: Upload Output APK
         uses: actions/upload-artifact@v4
